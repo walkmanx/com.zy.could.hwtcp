@@ -38,6 +38,9 @@ public class DataReceiveConfiguration {
     @Value("${udp.port}")
     private Integer udpPort;
 
+    @Value("${tcp.port}")
+    private Integer tcpPort;
+
     @Autowired
     private UdpBusinessService udpBusinessService;
 
@@ -116,7 +119,7 @@ public class DataReceiveConfiguration {
 
     @Bean
     public TcpNetServerConnectionFactory getServerConnectionFactory() {
-        TcpNetServerConnectionFactory serverConnectionFactory = new TcpNetServerConnectionFactory(1234);
+        TcpNetServerConnectionFactory serverConnectionFactory = new TcpNetServerConnectionFactory(tcpPort);
         serverConnectionFactory.setSerializer(new ByteArrayRawSerializer());
         serverConnectionFactory.setDeserializer(new ByteArrayRawSerializer());
         serverConnectionFactory.setLookupHost(false);
@@ -127,11 +130,11 @@ public class DataReceiveConfiguration {
     public TcpReceivingChannelAdapter getReceivingChannelAdapter() {
         TcpReceivingChannelAdapter receivingChannelAdapter = new TcpReceivingChannelAdapter();
         receivingChannelAdapter.setConnectionFactory(getServerConnectionFactory());
-        receivingChannelAdapter.setOutputChannelName("tcp");
+        receivingChannelAdapter.setOutputChannelName("tcpChannel");
         return receivingChannelAdapter;
     }
 
-    @ServiceActivator(inputChannel="tcp")
+    @ServiceActivator(inputChannel="tcpChannel")
     public void messageHandle(Message<?> message) {
         System.out.println(new String((byte[])message.getPayload()));
     }

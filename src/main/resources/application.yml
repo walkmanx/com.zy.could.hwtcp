@@ -6,3 +6,6 @@ spring:
 
 udp:
   port: 4443
+
+tcp:
+  port: 4445
