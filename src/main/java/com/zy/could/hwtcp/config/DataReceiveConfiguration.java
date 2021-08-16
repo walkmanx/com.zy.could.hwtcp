@@ -108,13 +108,13 @@ public class DataReceiveConfiguration {
     @ServiceActivator(inputChannel="DevStatus")
     public void udpMessageHandle(String message) {
         udpBusinessService.handle(message);
-        System.out.println("udp1:" +message);
+        System.out.println("接收到心跳数据:" +message);
     }
 
 
     @ServiceActivator(inputChannel="udpRoute2")
     public void udpMessageHandle2(String message) {
-        System.out.println("udp2:" +message);
+        System.out.println("接收到非心跳数据:" +message);
     }
 
     @Bean
