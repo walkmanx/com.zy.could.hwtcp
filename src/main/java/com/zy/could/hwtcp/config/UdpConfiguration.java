@@ -1,9 +1,9 @@
 package com.zy.could.hwtcp.config;
 
 import com.zy.could.hwtcp.common.constant.CommandEnum;
+import com.zy.could.hwtcp.common.util.SpringContextUtil;
 import com.zy.could.hwtcp.service.UdpBusinessService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,8 +15,10 @@ import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.ip.dsl.Udp;
 import org.springframework.integration.ip.tcp.TcpReceivingChannelAdapter;
+import org.springframework.integration.ip.tcp.TcpSendingMessageHandler;
 import org.springframework.integration.ip.tcp.connection.TcpNetServerConnectionFactory;
 import org.springframework.integration.ip.tcp.serializer.ByteArrayRawSerializer;
+import org.springframework.integration.ip.udp.UnicastSendingMessageHandler;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.handler.annotation.Headers;
 
@@ -33,17 +35,13 @@ import java.util.Map;
  */
 @Configuration
 @Slf4j
-public class DataReceiveConfiguration {
+public class UdpConfiguration {
 
     @Value("${udp.port}")
     private Integer udpPort;
 
     @Value("${tcp.port}")
     private Integer tcpPort;
-
-    @Autowired
-    private UdpBusinessService udpBusinessService;
-
 
     /**
      * UDP消息接收服务
@@ -107,16 +105,25 @@ public class DataReceiveConfiguration {
 
     @ServiceActivator(inputChannel="DevStatus")
     public void udpMessageHandle(String message) {
+//        log.info("接收到心跳数据:" +message);
+        UdpBusinessService udpBusinessService = SpringContextUtil.getBean(UdpBusinessService.class);
         udpBusinessService.handle(message);
-        System.out.println("接收到心跳数据:" +message);
     }
 
 
     @ServiceActivator(inputChannel="udpRoute2")
     public void udpMessageHandle2(String message) {
-        System.out.println("接收到非心跳数据:" +message);
+//        log.info("接收到非心跳数据:" +message);
     }
 
+    @Bean
+    @ServiceActivator(inputChannel = "udpOut")
+    public UnicastSendingMessageHandler unicastSendingMessageHandler() {
+        UnicastSendingMessageHandler unicastSendingMessageHandler = new UnicastSendingMessageHandler("localhost", udpPort);
+        return unicastSendingMessageHandler;
+    }
+
+    /**
     @Bean
     public TcpNetServerConnectionFactory getServerConnectionFactory() {
         TcpNetServerConnectionFactory serverConnectionFactory = new TcpNetServerConnectionFactory(tcpPort);
@@ -126,17 +133,27 @@ public class DataReceiveConfiguration {
         return serverConnectionFactory;
     }
 
+
     @Bean
     public TcpReceivingChannelAdapter getReceivingChannelAdapter() {
         TcpReceivingChannelAdapter receivingChannelAdapter = new TcpReceivingChannelAdapter();
         receivingChannelAdapter.setConnectionFactory(getServerConnectionFactory());
-        receivingChannelAdapter.setOutputChannelName("tcpChannel");
+        receivingChannelAdapter.setOutputChannelName("tcpIn");
         return receivingChannelAdapter;
     }
 
-    @ServiceActivator(inputChannel="tcpChannel")
+    @ServiceActivator(inputChannel="tcpIn")
     public void messageHandle(Message<?> message) {
+        log.info("接收到设备TCP消息：" );
         System.out.println(new String((byte[])message.getPayload()));
     }
 
+    @Bean
+    @ServiceActivator(inputChannel = "tcpOut")
+    public TcpSendingMessageHandler getSendChannelAdapter() {
+        TcpSendingMessageHandler outGate = new TcpSendingMessageHandler();
+        outGate.setConnectionFactory(getServerConnectionFactory());
+        return outGate;
+    }
+    */
 }

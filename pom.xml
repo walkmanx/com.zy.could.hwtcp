@@ -49,6 +49,12 @@
             <artifactId>spring-integration-ip</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.62</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
@@ -63,6 +69,17 @@
             <version>2.9.8</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.mina</groupId>
+            <artifactId>mina-core</artifactId>
+            <version>2.0.16</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.firstsolver.splash</groupId>
+            <artifactId>hwsdk</artifactId>
+            <version>1.0.0</version>
+        </dependency>
 
     </dependencies>
 

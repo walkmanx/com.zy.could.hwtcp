@@ -9,21 +9,17 @@ package com.zy.could.hwtcp.common.constant;
  * @description
  * @date
  */
-public enum CommandEnum {
+public enum SuccessEnum {
     /**
-     * 命令
+     * 成功
      */
-    Command("COMMAND","命令"),
+    SUCCESS("success","成功"),
     /**
-     * 回复请求
+     * 失败
      */
-    PostRequest("PostRequest","回复请求"),
-    /**
-     * 设备发送心跳数据
-     */
-    DevStatus("DevStatus","心跳");
+    FAIL("fail","失败");
 
-    private CommandEnum(String code,String name){
+    private SuccessEnum(String code, String name){
         this.code = code;
         this.name = name;
     }

@@ -16,14 +16,14 @@ import java.net.InetAddress;
  */
 public class UDPTest {
 
-    public static void main(String[] args) {
+    public static void main1(String[] args) {
         try {
             // 1，创建udp服务。通过DatagramSocket对象。
             DatagramSocket socket = new DatagramSocket(8888);
             // 2，确定数据，并封装成数据包。DatagramPacket(byte[] buf, int length, InetAddress
             // address, int port)
             byte[] buf = "你好，世界1".getBytes();
-            DatagramPacket dp = new DatagramPacket(buf, buf.length, InetAddress.getByName("localhost"),
+            DatagramPacket dp = new DatagramPacket(buf, buf.length, InetAddress.getByName("192.168.2.51"),
                     4443);
             // 3，通过socket服务，将已有的数据包发送出去。通过send方法。
             socket.send(dp);
@@ -32,5 +32,11 @@ public class UDPTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        String str = "   D{ \"COMMAND\" : \"DevStatus\", \"PARAM\" : { \"sn\" : \"8149120110002110\" } }";
+        System.out.println(str.substring(0,4));
+        System.out.println(str.substring(4,str.length()));
     }
 }
