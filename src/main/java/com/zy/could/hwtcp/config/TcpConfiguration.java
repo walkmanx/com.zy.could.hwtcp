@@ -27,7 +27,7 @@ import java.net.InetSocketAddress;
 @Slf4j
 public class TcpConfiguration {
 
-    @Value("${tcp.port}")
+    @Value("${hwtcp.tcp.port}")
     private Integer tcpPort;
 
     @Autowired

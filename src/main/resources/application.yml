@@ -4,8 +4,8 @@ spring:
   application:
     name: hwtcp
 
-udp:
-  port: 4443
-
-tcp:
-  port: 4445
+hwtcp:
+  udp:
+    port: 4443
+  tcp:
+    port: 4445

@@ -37,10 +37,10 @@ import java.util.Map;
 @Slf4j
 public class UdpConfiguration {
 
-    @Value("${udp.port}")
+    @Value("${hwtcp.udp.port}")
     private Integer udpPort;
 
-    @Value("${tcp.port}")
+    @Value("${hwtcp.tcp.port}")
     private Integer tcpPort;
 
     /**
