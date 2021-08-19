@@ -1,5 +1,6 @@
 package com.zy.could.hwtcp.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
  * @date 2021/8/18 下午 16:17
  */
 @Service
+@Slf4j
 public class TcpBusinessService {
 
     /**
@@ -19,7 +21,7 @@ public class TcpBusinessService {
      * @param message
      */
     public void handle(String message){
-
+        log.info("处理Tcp消息业务逻辑执行");
     }
 
 }

@@ -53,6 +53,9 @@ public class UdpBusinessService  {
                 String body = message.substring(4,message.length());
                 if(!StringUtils.isEmpty(body)){
                     UdpMessageData data = JsonUtils.parse(body.trim(), UdpMessageData.class);
+
+                    String sn = data.getParam().getSn();
+
                     log.info("[接收到的心跳消息]：" + JsonUtils.toJsonString(data));
 
                     this.sendMessage(BuildResultUtils.buildDevStatusResult(SuccessEnum.SUCCESS.getCode(), MessageEnum.DevStatus_Success.getName(), CommandEnum.PostRequest.getCode()));
