@@ -3,6 +3,12 @@ server:
 spring:
   application:
     name: hwtcp
+  rabbitmq:
+    host: 172.26.249.105
+    port: 5672
+    username: admin
+    password: test123
+    queuename: hwTcpQueue
 
 hwtcp:
   udp:
