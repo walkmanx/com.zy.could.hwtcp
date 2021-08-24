@@ -14,10 +14,13 @@ public class MessageSender {
     @Value("${spring.rabbitmq.queuename}")
     private String queueName;
 
+    @Value("${companyId}")
+    private String companyId;
+
     @Autowired
     private AmqpTemplate rabbitTemplate;
      
     public void send(String msg){
-        rabbitTemplate.convertAndSend(queueName, msg);
+        rabbitTemplate.convertAndSend(queueName + "_" + companyId, msg);
     }
 }

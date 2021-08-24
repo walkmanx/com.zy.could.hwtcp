@@ -8,10 +8,12 @@ spring:
     port: 5672
     username: admin
     password: test123
-    queuename: hwTcpQueue
+    queuename: hwtcp_queue
 
 hwtcp:
   udp:
     port: 4443
   tcp:
     port: 4445
+
+companyId: c9df55fd12354295a50f0293731eeqqq

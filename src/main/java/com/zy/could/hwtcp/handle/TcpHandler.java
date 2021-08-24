@@ -5,6 +5,7 @@ import Com.FirstSolver.Splash.PARAM_REPLY_PCIR_TYPE;
 import Com.FirstSolver.Splash.REPLY_PCIR_TYPE;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.zy.could.hwtcp.dto.TcpMessageData;
 import com.zy.could.hwtcp.service.TcpBusinessService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -78,12 +79,15 @@ public class TcpHandler extends IoHandlerAdapter {
         String str = message.toString();
         log.info("[TCP收到消息]：" + str);
 
-        COMMAND_PCIR_TYPE A = JSON.parseObject(message.toString(), COMMAND_PCIR_TYPE.class);
-        if ("RecogniseResult".equals(A.COMMAND)) {
+        TcpMessageData data = JSON.parseObject(message.toString(), TcpMessageData.class);
 
-            log.info("设备上传打卡记录：" + JSON.toJSONString(A.PARAM));
+        String command = data.getCommand();
 
-            tcpBusinessService.handle(JSON.toJSONString(A.PARAM));
+        if ("RecogniseResult".equals(command)) {
+
+            log.info("设备上传打卡记录：" + JSON.toJSONString(data.getParam()));
+
+            tcpBusinessService.handle(data);
 
             // 注意：保存数据然后进行回复
             REPLY_PCIR_TYPE M = new REPLY_PCIR_TYPE();
@@ -92,7 +96,7 @@ public class TcpHandler extends IoHandlerAdapter {
             M.PARAM.result = "success";
             session.write(JSON.toJSONString(M));
         }
-        else if("GetRequest".equals(A.COMMAND))
+        else if("GetRequest".equals(command))
         {
             //测试获取设备信息
             JSONObject m = new JSONObject();
@@ -105,7 +109,7 @@ public class TcpHandler extends IoHandlerAdapter {
             m.put("PARAM",p);
             session.write(JSON.toJSONString(m));
         }
-        else if("Return".equals(A.COMMAND))
+        else if("Return".equals(command))
         {
             // 正常发送完命令要 session.closeNow();
             // 连续发送命令过程不要session.closeNow();
@@ -113,7 +117,7 @@ public class TcpHandler extends IoHandlerAdapter {
             //session.write(tbCmd.getText());//测试连续发送命令
             session.closeNow();
         }
-        else if("Quit".equals(A.COMMAND))
+        else if("Quit".equals(command))
         {
             session.closeNow();
         }
